@@ -1,9 +1,31 @@
+import json
 from flask import Flask
+
 app = Flask(__name__)
 
-@app.route("/")
+@app.route('/')
 def hello():
-    return "Hello World!"
+    return 'Hello World!'
+
+# Add this new endpoint
+@app.route('/status')
+def status():
+    response = app.response_class(
+        response=json.dumps({"result":"OK - healthy"}),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+# Add this new endpoint
+@app.route('/metrics')
+def metrics():
+    response = app.response_class(
+        response=json.dumps({"status":"success","code":0,"data":{"UserCount":140,"UserCountActive":23}}),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
